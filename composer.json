@@ -1,0 +1,19 @@
+{
+	"name": "nateabele/li3_mustache",
+	"type": "lithium-library",
+	"description": "Lithium plugin for rendering Mustache templates.",
+	"keywords": ["templating", "lithium", "li3", "mustache"],
+	"homepage": "https://github.com/nateabele/li3_mustache",
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Nate Abele",
+			"homepage": "http://nateabele.com"
+		}
+	],
+	"require": {
+		"php": ">=5.3",
+		"composer/installers": "*",
+		"mustache/mustache": ">=2.0,<3.0"
+	}
+}
