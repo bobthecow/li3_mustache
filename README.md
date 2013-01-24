@@ -3,7 +3,7 @@
 Lithium library for parsing mustache views, uses [PHP Mustache](https://github.com/bobthecow/mustache.php).
 
 Mustache Spec version: `1.1.2`
-PHP Mustache version: `1.0.0`
+PHP Mustache version: `2.1.x`
 
 ## Installation
 
@@ -14,6 +14,22 @@ Add a submodule to your li3 libraries:
 and activate it in you app (config/bootstrap/libraries.php), of course:
 
 	Libraries::add('li3_mustache');
+
+Add `mustache/mustache` to your Composer dependencies:
+
+```json
+{
+    "require": {
+        ...
+        "mustache/mustache": ">=2.0,<3.0"
+        ...
+    }
+}
+```
+
+Then install!
+
+    php composer.phar update
 
 ## Usage
 

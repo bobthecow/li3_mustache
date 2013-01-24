@@ -2,7 +2,7 @@
 
 namespace li3_mustache\extensions\helper;
 
-use li3_mustache\libraries\Mustache as Must;
+use Mustache_Engine;
 
 use lithium\util\Inflector;
 use lithium\util\String;
@@ -52,8 +52,8 @@ class Mustache extends \lithium\template\Helper {
 	public function render($name, $data = array(), $options = array()) {
 		$template = $this->template($name, $data, $options);
 		$partials = $this->partials($template);
-		$data = $this->_extract($data);
-		return new Must($template, $data, $partials);
+		$engine = new Mustache_Engine(array('partials' => $partials));
+		return $engine->render($template, $data);
 	}
 
 	/**
@@ -157,42 +157,6 @@ class Mustache extends \lithium\template\Helper {
 		$config = Set::merge($config, $this->_view->_config);
 		$this->_view->__construct($config);
 		return $this->_view;
-	}
-
-	/**
-	 * make sure, only array data is returned
-	 *
-	 * @param string $data mixed can be objects or array
-	 * @return array resulting data with only array format
-	 */
-	public function _extract($data) {
-		$collection_classes = $this->_collection_classes;
-		array_walk_recursive($data, function(&$item, &$key) use (&$collection_classes) {
-
-			// we need to convert our data, that is probably an object
-			// to an array, or our mustache complains.
-			if (is_object($item)) {
-
-				// get type of class (we do not care for namespaces...)
-				$class_type = basename(str_replace('\\', '/', get_class($item)));
-
-				// First, we check, if this is a Collection or RecordSet,
-				// because we need to get only the values, the $keys are $ids
-				// which makes mustache think, this is an named object, instead
-				// of an array
-				if (in_array($class_type, $collection_classes)) {
-					$item = array_values($item->data());
-
-				// whatever it is, if it has a data() method on it, we should call that.
-				// that way, we can even throw models or whatever you think in it.
-				// If you handover a custom tailored object, make sure you implement this
-				// so it works out of the box
-				} elseif (is_callable(array($item, 'data'))) {
-					$item = $item->data();
-				}
-			}
-		});
-		return $data;
 	}
 }
 
